@@ -1,0 +1,234 @@
+{
+    "nodes": [
+        {
+            "id": "0",
+            "name": "Diplopia",
+            "type": "Finding",
+            "group": 0
+        },
+        {
+            "id": "1",
+            "name": "Headache",
+            "type": "Finding",
+            "group": 1
+        },
+        {
+            "id": "2",
+            "name": "Nausea",
+            "type": "Finding",
+            "group": 2
+        },
+        {
+            "id": "3",
+            "name": "Vomiting",
+            "type": "Finding",
+            "group": 3
+        },
+        {
+            "id": "4",
+            "name": "DiplopiaDuration",
+            "type": "Finding",
+            "group": 4
+        },
+        {
+            "id": "5",
+            "name": "HeadacheDuration",
+            "type": "Finding",
+            "group": 5
+        },
+        {
+            "id": "6",
+            "name": "NauseaDuration",
+            "type": "Finding",
+            "group": 6
+        },
+        {
+            "id": "7",
+            "name": "VomitingDuration",
+            "type": "Finding",
+            "group": 7
+        },
+        {
+            "id": "8",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "9",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "10",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "11",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "12",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "13",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "14",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "15",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "16",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "17",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "18",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "19",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "20",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "21",
+            "name": "?EntryPoint",
+            "type": ""
+        },
+        {
+            "id": "22",
+            "name": "?Finding",
+            "type": ""
+        },
+        {
+            "id": "23",
+            "name": "?EntryPoint",
+            "type": ""
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 4,
+            "name": "includes"
+        },
+        {
+            "source": 1,
+            "target": 5,
+            "name": "includes"
+        },
+        {
+            "source": 2,
+            "target": 6,
+            "name": "includes"
+        },
+        {
+            "source": 3,
+            "target": 7,
+            "name": "includes"
+        },
+        {
+            "source": 0,
+            "target": 8,
+            "name": "includes"
+        },
+        {
+            "source": 0,
+            "target": 9,
+            "name": "confirm"
+        },
+        {
+            "source": 1,
+            "target": 10,
+            "name": "includes"
+        },
+        {
+            "source": 1,
+            "target": 11,
+            "name": "confirm"
+        },
+        {
+            "source": 2,
+            "target": 12,
+            "name": "includes"
+        },
+        {
+            "source": 2,
+            "target": 13,
+            "name": "confirm"
+        },
+        {
+            "source": 3,
+            "target": 14,
+            "name": "includes"
+        },
+        {
+            "source": 3,
+            "target": 15,
+            "name": "confirm"
+        },
+        {
+            "source": 4,
+            "target": 16,
+            "name": "includes"
+        },
+        {
+            "source": 4,
+            "target": 17,
+            "name": "confirm"
+        },
+        {
+            "source": 5,
+            "target": 18,
+            "name": "includes"
+        },
+        {
+            "source": 5,
+            "target": 19,
+            "name": "confirm"
+        },
+        {
+            "source": 6,
+            "target": 20,
+            "name": "includes"
+        },
+        {
+            "source": 6,
+            "target": 21,
+            "name": "confirm"
+        },
+        {
+            "source": 7,
+            "target": 22,
+            "name": "includes"
+        },
+        {
+            "source": 7,
+            "target": 23,
+            "name": "confirm"
+        }
+    ]
+}

@@ -1,0 +1,72 @@
+<?xml-stylesheet type="text/xsl" href="GetGoalStructure.xsl"?>
+<ssm >
+	<meta lastmodifieddate="2009-03-20">
+		<creator>Chris Michael</creator>
+		<description>Medical Goal Struncture</description>
+		<goal_structure>
+			<nodes>
+				<node type="OrganSystem" label="Organ System"/>
+				<node type="EtiologicAgent" label="Etiologic Agent"/>
+				<node type="EntryPoint" label="Entry Point"/>
+				<node type="Disease" label="Disease"/>
+				<node type="Finding" label="Finding"/>
+				<node type="Question" label="Question"/>								
+			</nodes>
+			<relationships>
+				<relationship name="residesIn" a="EtiologicAgent" b="OrganSystem"/>
+				<relationship name="induces" a="EtiologicAgent" b="Disease"/>
+				<relationship name="enters" a="EtiologicAgent" b="EntryPoint"/>
+				<relationship name="causes" a="Disease" b="Finding"/>
+				<relationship name="confirms" a="Question" b="Finding"/>
+				<relationship name="confirm" a="Finding" b="EntryPoint"/>
+				<relationship name="includes" a="OrganSystem" b="OrganSystem"/>
+				<relationship name="includes" a="Finding" b="Finding"/>
+				<relationship name="causes" a="Disease" b="Disease"/>
+				<relationship name="subtype" a="Disease" b="Disease"/>
+				<relationship name="subtype" a="EtiologicAgent" b="EtiologicAgent"/>
+			</relationships>
+		</goal_structure>
+		<strategy_operators>
+			<object_centered_principles>
+				<node type="query">
+					<attribute_centered_principles/>
+				</node>
+				<node type="discrepancy">
+					<attribute_centered_principles for="discrepancy">
+						<attribute name="numOrders"/>
+						<attribute name="revenue"/>
+						<attribute name="numItems"/>
+					</attribute_centered_principles>
+					<goals>
+						<relationship>
+							<relationship name="equivalent_to" a="discrepancy" b="discrepancy"/>
+							<relationship name="caused_by" a="discrepancy" b="data_source"/>
+						</relationship>
+					</goals>
+				</node>
+				<node type="error">
+					<attribute_centered_principles for="error"/>
+					<goals>
+						<relationship name="subtype_of" a="error" b="error"/>
+						<relationship name="confirmed_by" a="error" b="query"/>
+					</goals>
+				</node>
+				<node type="data_source">
+					<attribute_centered_principles for="data_source"/>
+					<goals>
+						<relationship name="confirmed_by" a="data_source" b="query"/>
+						<relationship name="traceable_to" a="data_source" b="error"/>
+						<relationship name="has_subtype" a="data_source" b="data_source"/>
+						<relationship name="subtype_of" a="data_source" b="data_source"/>
+					</goals>
+				</node>
+			</object_centered_principles>
+		</strategy_operators>
+	</meta>
+	<graph mode="static" defaultedgetype="directed">
+		<nodes/>
+		<goals/>
+	</graph>
+	<knowledgebase>
+	</knowledgebase>
+</ssm>

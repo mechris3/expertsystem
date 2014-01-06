@@ -1,0 +1,182 @@
+<ssm>
+  <meta lastmodifieddate="2009-03-20">
+    <creator>Chris Michael</creator>
+    <description>Test SSM</description>
+    <goal_structure>
+			<nodes>
+				<node type="OrganSystem" color="#1F77B4"/>
+				<node type="EtiologicAgent" color="#1F77B4"/>
+				<node type="EntryPoint" color="#1F77B4"/>
+				<node type="Disease" color="red"/>
+				<node type="Finding" color="#1F77B4"/>
+				<node type="Question" color="yellow"/>
+			</nodes>
+			<relationships>
+				<relationship type="confirms" a="Question" b="Finding"/>
+				<relationship type="includes" a="Finding" b="Finding"/>
+				<relationship type="confirm" a="Finding" b="EntryPoint"/>
+				<relationship type="causes" a="Disease" b="Finding"/>
+				<relationship type="causes" a="Disease" b="Disease"/>
+				<relationship type="includes" a="Disease" b="Disease"/>
+				<relationship type="induces" a="EtiologicAgent" b="Disease"/>
+				<relationship type="enters" a="EtiologicAgent" b="EntryPoint"/>
+				<relationship type="residesIn" a="EtiologicAgent" b="OrganSystem"/>
+				<relationship type="includes" a="OrganSystem" b="OrganSystem"/>
+			</relationships>
+		</goal_structure>
+    <strategy_operators>
+			<object_centered_principles>
+				<node type="Question">
+					<attribute_centered_principles/>
+				</node>
+				<node type="Disease"/>
+				<node type="Finding">
+					<attribute_centered_principles for="Disease">
+						<attribute name="abnormal"/>
+					</attribute_centered_principles>
+					<goals>
+						<relationship>
+							<relationship name="equivalent_to" a="discrepancy" b="discrepancy"/>
+							<relationship name="caused_by" a="discrepancy" b="data_source"/>
+						</relationship>
+					</goals>
+				</node>
+				<node type="OrganSystem">
+					<attribute_centered_principles for="OrganSystem"/>
+					<goals>
+						<relationship name="subtype_of" a="error" b="error"/>
+						<relationship name="confirmed_by" a="error" b="query"/>
+					</goals>
+				</node>
+				<node type="EtiologicAgent">
+					<attribute_centered_principles for="EtiologicAgent"/>
+					<goals>
+						<relationship name="confirmed_by" a="data_source" b="query"/>
+						<relationship name="traceable_to" a="data_source" b="error"/>
+						<relationship name="has_subtype" a="data_source" b="data_source"/>
+						<relationship name="subtype_of" a="data_source" b="data_source"/>
+					</goals>
+				</node>
+				
+			</object_centered_principles>
+		</strategy_operators>
+  </meta>
+  <graph mode="static" defaultedgetype="directed">
+    <next_goal>
+      <relationship type="includes" a="?Disease" b="7">
+        <goalText>What Disease includes BrainMassLesion?</goalText>
+      </relationship>
+    </next_goal>
+    <nodes>
+      <node type="Finding" id="0" name="Diplopia"/>
+      
+      <node type="Finding" id="1" name="DiplopiaDuration"/>
+      
+        
+        
+        
+        
+      
+      <node type="nill" name="?nill" id="2" label="" c="0"/>
+      
+      <node type="nill" name="?nill" id="3" label="" c="1"/>
+      
+      <node type="Finding" name="FocalNeurologicalFinding" id="4" label="Focal Neurological Finding" c="0"/>
+      
+        
+        
+        
+        
+      
+      <node type="Disease" name="IncreasedPressureInTheBrain" id="5" label="Increased pressure in the brain" c="0"/>
+      
+      <node type="nill" name="?nill" id="6" label="" c="2"/>
+      
+      <node type="Disease" name="BrainMassLesion" id="7" label="Brain Mass lesion" c="0"/>
+      
+        
+        
+      
+      <node type="nill" name="?nill" id="8" label="" c="3"/>
+      
+      <node type="nill" name="?nill" id="9" label="" c="4"/>
+      
+      <node type="Disease" name="BrainTumour" id="10" label="Brain Tumour" c="0"/>
+      
+        
+        
+        
+        
+        
+      
+      <node type="Disease" name="Hematoma" id="11" label="Hematoma" c="0"/>
+      
+        
+        
+        
+        
+        
+      
+      <node type="Disease" name="CollectionOfPus" id="12" label="Collection Of Pus" c="0"/>
+      
+        
+        
+        
+        
+        
+      
+      <node type="nill" name="?nill" id="13" label="" c="5"/>
+      
+    <node type="Disease" name="FocalProcess" id="14" label="Focal Process" c="0"/></nodes>
+    <relationships>
+      <relationship type="includes" a="0" b="1" aText="Diplopia" bText="DiplopiaDuration"/>
+      <relationship type="confirm" a="0" b="2" aText="Diplopia" bText="?nill" id="0x2"/>
+      <relationship type="confirms" a="3" b="0" aText="?nill" bText="Diplopia" id="3x0"/>
+      <relationship type="includes" a="4" b="0" aText="FocalNeurologicalFinding" bText="Diplopia" id="4x0"/>
+      <relationship type="causes" a="5" b="0" aText="IncreasedPressureInTheBrain" bText="Diplopia" id="5x0"/>
+      <relationship type="includes" a="5" b="6" aText="IncreasedPressureInTheBrain" bText="?nill" id="5x6"/>
+      <relationship type="causes" a="7" b="5" aText="BrainMassLesion" bText="IncreasedPressureInTheBrain" id="7x5"/>
+      <relationship type="includes" a="8" b="5" aText="?nill" bText="IncreasedPressureInTheBrain" id="8x5"/>
+      <relationship type="induces" a="9" b="5" aText="?nill" bText="IncreasedPressureInTheBrain" id="9x5"/>
+      <relationship type="includes" a="7" b="10" aText="BrainMassLesion" bText="BrainTumour" id="7x10"/>
+      <relationship type="includes" a="7" b="11" aText="BrainMassLesion" bText="Hematoma" id="7x11"/>
+      <relationship type="includes" a="7" b="12" aText="BrainMassLesion" bText="CollectionOfPus" id="7x12"/>
+      <relationship type="causes" a="13" b="7" aText="?nill" bText="BrainMassLesion" id="13x7"/>
+    <relationship type="includes" a="14" b="7" aText="FocalProcess" bText="BrainMassLesion" id="14x7"/><fred><node type="Disease" name="FocalProcess" id="14" label="Focal Process" c="0"/></fred></relationships>
+  </graph>
+  <kb>
+		<nodes>
+			<node type="Finding" name="Diplopia" label="Diplopia (Double Vision)">
+				<attribute name="abnormal" value="abnormal"/>
+			</node>
+			<node type="Finding" name="Headache" label="Headache"/>
+			<node type="Finding" name="Nausea" label="Nausea"/>
+			<node type="Finding" name="Vomiting" label="Vomiting"/>
+			<node type="Finding" name="DiplopiaDuration" label="Diplopia (Double Vision) &gt; 2 weeks">
+				<attribute name="abnormal" value="abnormal"/>
+			</node>
+			<node type="Finding" name="HeadacheDuration" label="Headache &gt; 2 weeks"/>
+			<node type="Finding" name="NauseaDuration" label="Nausea &gt; 2 weeks"/>
+			<node type="Finding" name="VomitingDuration" label="Vomiting &gt; 2 weeks"/>
+			<node type="Finding" name="VomitingDuration" label="Vomiting &gt; 2 weeks"/>
+			<node type="Finding" name="FocalNeurologicalFinding" label="Focal Neurological Finding"/>			
+			<node type="Disease" name="IncreasedPressureInTheBrain" label="Increased pressure in the brain"/>
+			<node type="Disease" name="BrainMassLesion" label="Brain Mass lesion"/>			
+			<node type="Disease" name="BrainTumour" label="Brain Tumour"/>
+			<node type="Disease" name="Hematoma" label="Hematoma"/>
+			<node type="Disease" name="CollectionOfPus" label="Collection Of Pus"/>
+			<node type="Disease" name="FocalProcess" label="Focal Process"/>			
+		</nodes>
+		<relationships>
+			<relationship type="includes" a="Diplopia" b="DiplopiaDuration"/>
+			<relationship type="causes" a="IncreasedPressureInTheBrain" b="Diplopia"/>
+			<relationship type="causes" a="BrainMassLesion" b="IncreasedPressureInTheBrain"/>			
+			<relationship type="includes" a="BrainMassLesion" b="BrainTumour"/>				
+			<relationship type="includes" a="BrainMassLesion" b="Hematoma"/>				
+			<relationship type="includes" a="BrainMassLesion" b="CollectionOfPus"/>		
+			<relationship type="includes" a="FocalProcess" b="BrainMassLesion"/>
+			<relationship type="causes" a="FocalProcess" b="FocalNeurologicalFinding"/>	
+			<relationship type="includes" a="FocalNeurologicalFinding" b="Diplopia"/>				
+		</relationships>
+	</kb>
+</ssm>

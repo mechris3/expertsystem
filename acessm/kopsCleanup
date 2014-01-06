@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+	<xsl:template match="/">
+		<ssm>
+			<xsl:copy-of select="ssm/meta"/>
+			<graph mode="static" defaultedgetype="directed">
+				<!--
+				<next_goal>
+					<xsl:element name="relationship">
+						<xsl:attribute name="name">
+							<xsl:value-of select="substring-before($goal,',')"/>
+						</xsl:attribute>
+						<xsl:attribute name="a">
+							<xsl:value-of select="substring-before(substring-after($goal,','),',')"/>
+						</xsl:attribute>
+						<xsl:attribute name="b">
+							<xsl:value-of select="concat('?',substring-after($goal,'?'))"/>
+						</xsl:attribute>
+					</xsl:element>
+				</next_goal>
+				<next_goal><relationship name="equivalent_to" a="1" b="?discrepancy"/></next_goal>
+-->
+				<xsl:copy-of select="/ssm/graph/next_goal"/>
+				<nodes>
+					<xsl:apply-templates select="/ssm/graph/nodes"/>
+					<xsl:apply-templates select="/ssm/graph/next_goal" mode="node"/>
+				</nodes>
+				<relationships>
+					<xsl:apply-templates select="/ssm/graph/relationships"/>
+					<xsl:apply-templates select="/ssm/graph/next_goal" mode="relationship"/>
+				</relationships>
+			</graph>
+			<xsl:copy-of select="/ssm/kb"/>
+		</ssm>
+	</xsl:template>
+	<xsl:template match="/ssm/graph/nodes/node">
+		<!-- First Copy the node -->
+		<xsl:copy-of select="."/>
+	</xsl:template>
+	<xsl:template match="/ssm/graph/relationships/relationship">
+		<xsl:copy-of select="."/>
+	</xsl:template>
+	<xsl:template match="/ssm/graph/next_goal" mode="node">
+		<!-- Responsible for adding the new node (or nill) to the ssm from the kb -->
+		<xsl:variable name="relationshipName" select="/ssm/graph/next_goal/relationship/@type"/>
+		<xsl:variable name="boundNodeId">
+			<xsl:choose>
+				<xsl:when test="substring(/ssm/graph/next_goal/relationship/@a,1,1)='?'">
+					<xsl:value-of select="/ssm/graph/next_goal/relationship/@b"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="/ssm/graph/next_goal/relationship/@a"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="boundNode">
+			<xsl:choose>
+				<xsl:when test="substring(/ssm/graph/next_goal/relationship/@a,1,1)='?'">
+					<xsl:value-of select="'b'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'a'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="boundNodeName" select="/ssm/graph/nodes/node[@id=$boundNodeId]/@name"/>
+		<!-- Infer the current Max Id from the number of nodes -->
+		<xsl:variable name="startId" select="count(/ssm/graph/nodes/node)"/>
+		<xsl:choose>
+			<xsl:when test="$boundNode='a'">
+				<xsl:for-each select="/ssm/kb/relationships/relationship[@type=$relationshipName and @a=$boundNodeName]">
+					<xsl:variable name="newNodeName" select="@b"/>
+					<xsl:variable name="newNodeType" select="/ssm/kb/nodes/node[@name=$newNodeName]/@type"/>
+					<xsl:variable name="label" select="/ssm/kb/nodes/node[@name=$newNodeName]/@label"/>
+					<xsl:variable name="id" select="$startId+position()-1"/>
+					<node type="{$newNodeType}" name="{$newNodeName}" label="{$label}" id="{$id}">
+						<xsl:for-each select="/ssm/kb/nodes/node[@name=$newNodeName]/attribute">
+							<xsl:copy-of select="."/>
+						</xsl:for-each>
+					</node>
+				</xsl:for-each>
+				<xsl:if test="count(/ssm/kb/relationships/relationship[@type=$relationshipName and @a=$boundNodeName])=0">
+					<xsl:variable name="id" select="$startId+position()-1"/>
+					<node type="nill" name="?nill" label="nill" id="{$id}"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="/ssm/kb/relationships/relationship[@type=$relationshipName and @b=$boundNodeName]">
+					<xsl:variable name="newNodeName" select="@a"/>
+					<xsl:variable name="newNodeType" select="/ssm/kb/nodes/node[@name=$newNodeName]/@type"/>
+					<xsl:variable name="label" select="/ssm/kb/nodes/node[@name=$newNodeName]/@label"/>
+					<xsl:variable name="id" select="$startId+position()-1"/>
+					<node type="{$newNodeType}" name="{$newNodeName}" label="{$label}" id="{$id}">
+						<xsl:for-each select="/ssm/kb/nodes/node[@name=$newNodeName]/attribute">
+							<xsl:copy-of select="."/>
+						</xsl:for-each>
+					</node>
+				</xsl:for-each>
+				<xsl:if test="count(/ssm/kb/relationships/relationship[@type=$relationshipName and @b=$boundNodeName])=0">
+					<xsl:variable name="id" select="$startId+position()-1"/>
+					<node type="nill" name="?nill" label="nill" id="{$id}"/>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="/ssm/graph/next_goal" mode="relationship">
+		<!-- Responsible for adding the new relationship to the ssm from the kb -->
+		<xsl:variable name="relationshipName" select="/ssm/graph/next_goal/relationship/@type"/>
+		<xsl:variable name="boundNodeId">
+			<xsl:choose>
+				<xsl:when test="substring(/ssm/graph/next_goal/relationship/@a,1,1)='?'">
+					<xsl:value-of select="/ssm/graph/next_goal/relationship/@b"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="/ssm/graph/next_goal/relationship/@a"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="boundNode">
+			<xsl:choose>
+				<xsl:when test="substring(/ssm/graph/next_goal/relationship/@a,1,1)='?'">
+					<xsl:value-of select="'b'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'a'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="boundNodeName" select="/ssm/graph/nodes/node[@id=$boundNodeId]/@name"/>
+		<!-- Infer the current Max Id from the number of nodes -->
+		<xsl:variable name="startId" select="count(/ssm/graph/nodes/node)"/>
+		<xsl:choose>
+			<xsl:when test="$boundNode='a'">
+				<xsl:for-each select="/ssm/kb/relationships/relationship[@type=$relationshipName and @a=$boundNodeName]">
+					<xsl:variable name="newNodeName" select="@b"/>
+					<xsl:variable name="newNodeType" select="/ssm/kb/nodes/node[@name=$newNodeName]/@type"/>
+					<xsl:variable name="aId" select="/ssm/kb/nodes/node[@name=$newNodeName]/@label"/>
+					<xsl:variable name="bId" select="$startId+position()-1"/>
+					<relationship type="{/ssm/graph/next_goal/relationship/@type}" a="{$boundNodeId}" b="{$bId}" id="{$boundNodeId}x{$bId}"/>
+				</xsl:for-each>
+				<!-- Now take care of the nill case -->
+				<xsl:if test="count(/ssm/kb/relationships/relationship[@type=$relationshipName and @a=$boundNodeName])=0">
+					<xsl:variable name="bId" select="$startId+position()-1"/>
+					<relationship type="{/ssm/graph/next_goal/relationship/@type}" a="{$boundNodeId}" b="{$bId}" id="{$boundNodeId}x{$bId}"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="/ssm/kb/relationships/relationship[@type=$relationshipName and @b=$boundNodeName]">
+					<xsl:variable name="newNodeName" select="@a"/>
+					<xsl:variable name="newNodeType" select="/ssm/kb/nodes/node[@name=$newNodeName]/@type"/>
+					<xsl:variable name="aId" select="$startId+position()-1"/>
+					<xsl:variable name="bId" select="/ssm/kb/nodes/node[@name=$newNodeName]/@label"/>
+					<relationship type="{/ssm/graph/next_goal/relationship/@type}" a="{$aId}" b="{$boundNodeId}" id="{$aId}x{$boundNodeId}"/>
+				</xsl:for-each>
+				<!-- Now take care of the nill case -->
+				<xsl:if test="count(/ssm/kb/relationships/relationship[@type=$relationshipName and @b=$boundNodeName])=0">
+					<xsl:variable name="aId" select="$startId+position()-1"/>
+					<relationship type="{/ssm/graph/next_goal/relationship/@type}" a="{$aId}" b="{$boundNodeId}" id="{$aId}x{$boundNodeId}"/>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+</xsl:stylesheet>
