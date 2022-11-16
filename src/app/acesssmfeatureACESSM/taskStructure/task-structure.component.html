@@ -1,0 +1,42 @@
+links: {{_links | json}}
+nodes: {{_nodes | json}}
+<!-- nodes: {{nodes | json}}
+<svg [attr.width]="width" [attr.height]="height">
+	<rect [attr.width]="width" [attr.height]="height" fill="#EEE"></rect>
+	<g *ngFor="let node of _nodes; let i = index"
+		[attr.transform]="'translate('+(node?.x-entityWidth/2)+','+(node?.y -entityHeight/2)+')'">
+		<rect rx="5" ry="5" [attr.width]="entityWidth" [attr.height]="entityHeight"
+			style="stroke-width:3;stroke:rgb(0,0,0)" />
+		<text x="5" y="15">{{node | json}}</text>
+	</g>
+</svg> -->
+
+<!-- nodes: <pre>{{_nodes | json}}</pre> -->
+<svg [attr.width]="width" [attr.height]="height">
+  <rect [attr.width]="width" [attr.height]="height" fill="#EEE"></rect>
+  <g
+    *ngFor="let node of _nodes; let i = index"
+    [attr.transform]="
+      'translate(' +
+      (node.x - entityWidth / 2) +
+      ',' +
+      (node.y - entityHeight / 2) +
+      ')'
+    "
+  >
+    <rect
+      rx="5"
+      ry="5"
+      [attr.width]="entityWidth"
+      [attr.height]="entityHeight"
+      style="stroke-width: 3; stroke: rgb(8, 90, 20);"
+      fill="red"
+    />
+    <text x="5" y="15">{{ node.name }}</text>
+  </g>
+  <g>
+
+
+  </g>
+
+</svg>
